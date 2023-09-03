@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "469600410687",
+    "project_id": "fuleapp-d21f0",
+    "storage_bucket": "fuleapp-d21f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469600410687:android:fcb4a5bd2fa5597a13ec8a",
+        "android_client_info": {
+          "package_name": "com.fule.fuleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469600410687-rf8eus379ki3ohpespqojpqs12lqda8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfyB3Y29nf5WBm78MFoXY3wSozlupPl7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469600410687-rf8eus379ki3ohpespqojpqs12lqda8h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
