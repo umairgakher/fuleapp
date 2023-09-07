@@ -5,6 +5,7 @@ import 'package:app/rates.dart';
 import 'package:app/user/googlemap.dart';
 import 'package:app/user/location_controller.dart';
 import 'package:app/user/placeorder.dart';
+import 'package:app/user/recent_order.dart';
 import 'package:app/user/seemore.dart';
 import 'package:app/user/signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -131,6 +132,17 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Rates()),
+                );
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: const Icon(Icons.av_timer_sharp),
+              title: const Text('Recent Orders'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecentOrder()),
                 );
               },
             ),

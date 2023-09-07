@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, prefer_const_constructors
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, unused_local_variable, camel_case_types, use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, unnecessary_string_interpolations, prefer_const_constructors_in_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_cast
 
 import 'package:app/user/location_controller.dart';
 import 'package:app/user/order_controller.dart';
@@ -26,17 +26,44 @@ class _CheckoutScreenState extends State<Paymet_next> {
   bool isEasypaisaSelected = false;
   User? user = FirebaseAuth.instance.currentUser;
   String? userId;
-  double cast = 0;
+  int? cast = 0;
   String? fuelType;
+  int? quantity;
+  int? price;
 
+  @override
   @override
   void initState() {
     userId = user!.uid;
-    print("${OrderController().fuelType}");
     fuelType = OrderController().fuelType;
-    getTotalCost(); // Call getTotalCost here to calculate and update the cost.
-
+    quantity = OrderController().quantity;
+    fetchDataFromFirestore();
     super.initState();
+  }
+
+  Future<void> fetchDataFromFirestore() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('rate')
+          .doc(fuelType)
+          .get();
+
+      if (snapshot.exists) {
+        final data = snapshot.data();
+        if (data != null) {
+          print("Data retrieved successfully");
+          price = data['price'] as int;
+          print("$price price");
+          setState(() {
+            cast = ((quantity ?? 0) * (price ?? 0));
+          });
+        }
+      } else {
+        print("Document does not exist.");
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
   }
 
   String formatRequestTime(Timestamp? timestamp) {
@@ -47,21 +74,6 @@ class _CheckoutScreenState extends State<Paymet_next> {
     } else {
       return '';
     }
-  }
-
-  void getTotalCost() {
-    FirebaseFirestore.instance
-        .collection('rate')
-        .doc(fuelType)
-        .get()
-        .then((snapshot) {
-      var data = snapshot.data();
-      if (data != null) {
-        setState(() {
-          cast = OrderController().quantity! * data['price'] as double;
-        });
-      }
-    });
   }
 
   @override
@@ -115,7 +127,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
                       ],
                     ),
                     Text(
-                      ' Liters: ${OrderController().quantity}.00',
+                      ' Liters: ${OrderController().quantity ?? 0}.00',
                       style: TextStyle(
                         fontSize: 16,
                       ),
@@ -143,7 +155,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      '${cast.toStringAsFixed(2)}',
+                      '${cast?.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -229,7 +241,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: cast > 0
+                  onPressed: (cast ?? 0) > 0
                       ? () {
                           FirebaseFirestore.instance
                               .collection('orders')
@@ -237,10 +249,10 @@ class _CheckoutScreenState extends State<Paymet_next> {
                               .set({
                             "carNo": OrderController().carno,
                             "address": OrderController().address,
-                            "quantity": OrderController().quantity,
+                            "quantity": OrderController().quantity ?? 0,
                             "phoneNo": OrderController().phoneno,
                             "fuleType": OrderController().fuelType,
-                            "Total": cast,
+                            "Total": cast ?? 0,
                             "orderstate": 0,
                             "orderTime": DateTime.now(),
                           });
@@ -252,7 +264,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    primary: cast > 0 ? Colors.orange : Colors.grey,
+                    primary: (cast ?? 0) > 0 ? Colors.orange : Colors.grey,
                   ),
                   child: Text(
                     'Proceed',
