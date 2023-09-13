@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../Driver/drivre_dashboard.dart';
+
 class loginScreen extends StatefulWidget {
   const loginScreen({Key? key});
 
@@ -183,6 +185,8 @@ class _loginScreenState extends State<loginScreen> {
           onPressed: () async {
             var loginEmail = emailController.text.trim();
             var loginPassword = passwordController.text.trim();
+            final emailError = validateEmail(emailController.text);
+            final passwordError = validatePassword(passwordController.text);
 
             try {
               setState(() {
@@ -190,32 +194,62 @@ class _loginScreenState extends State<loginScreen> {
                 emailController.text = emailController.text.trim();
                 passwordController.text = passwordController.text.trim();
               });
-
-              final emailError = validateEmail(emailController.text);
-              final passwordError = validatePassword(passwordController.text);
-
               if (emailError == null && passwordError == null) {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: emailController.text,
-                  password: passwordController.text,
-                );
-                // Check if the email and password match the admin credentials
-                if (emailController.text == 'admin@example.com' &&
-                    passwordController.text == 'A1234567') {
-                  // Redirect to the admin panel
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FuelAppDashboard(),
-                    ),
+                try {
+                  final UserCredential userCredential =
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: loginEmail,
+                    password: loginPassword,
                   );
-                } else {
-                  // Redirect to the user dashboard
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserDashboardScreen(),
-                    ),
+                  final User? firebaseUser = userCredential.user;
+
+                  if (firebaseUser != null) {
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .where("email", isEqualTo: loginEmail)
+                        .get()
+                        .then((querySnapshot) {
+                      if (querySnapshot.docs.isNotEmpty) {
+                        final docSnapshot = querySnapshot.docs.first;
+                        Map<String, dynamic> data = docSnapshot.data();
+                        int checkuser = data['checkuser'];
+                        print('checkuser: $checkuser');
+
+                        if (checkuser == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FuelAppDashboard()),
+                          );
+                        } else if (checkuser == 2) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => driverDashbord()),
+                          );
+                        } else if (checkuser == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserDashboardScreen()),
+                          );
+                        } else {
+                          print('Invalid checkuser value');
+                        }
+                      } else {
+                        print('User document does not exist');
+                      }
+                    });
+                  }
+                  print('Login Successful');
+                } on FirebaseAuthException catch (e) {
+                  Fluttertoast.showToast(
+                    msg: "$e",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Color.fromARGB(255, 7, 80, 140),
+                    textColor: Colors.white,
                   );
                 }
               } else {

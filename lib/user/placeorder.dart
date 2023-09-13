@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, sort_child_properties_last, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, library_private_types_in_public_api, avoid_print, unused_local_variable, unnecessary_null_comparison, unused_import
+// ignore_for_file: deprecated_member_use, sort_child_properties_last, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, library_private_types_in_public_api, avoid_print, unused_local_variable, unnecessary_null_comparison, unused_import, avoid_unnecessary_containers, sized_box_for_whitespace
 
 import 'package:app/user/location_controller.dart';
 import 'package:app/user/order_controller.dart';
@@ -23,8 +23,11 @@ class _OrderScreenState extends State<order> {
   String? fuelType = "Petrol";
   bool isOrderForYourselfActive = true;
   int selectedFuelType = 0;
+  int? indexx;
+  int selectedFuelStation = 0;
   int quantity = 0;
   User? user = FirebaseAuth.instance.currentUser;
+  String? station;
   String? userId;
 
   void increaseQuantity() {
@@ -54,6 +57,9 @@ class _OrderScreenState extends State<order> {
     var phoneno = phoneController.text;
     var address = addressController.text;
     var carno = carNoController.text;
+    var addressstatoion = OrderController().address;
+    var station = OrderController().station;
+
     return phoneno.isNotEmpty &&
         address.isNotEmpty &&
         carno.isNotEmpty &&
@@ -78,7 +84,7 @@ class _OrderScreenState extends State<order> {
                 child: IntrinsicHeight(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -380,6 +386,120 @@ class _OrderScreenState extends State<order> {
                           ),
                         ],
                       ),
+                      // Existing code...
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 250,
+                        child: Container(
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('stations')
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              List<QueryDocumentSnapshot> documents =
+                                  snapshot.data!.docs;
+
+                              if (documents.isEmpty) {
+                                return Center(
+                                  child: Text(
+                                    'No fuel station yet.',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: documents.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return Divider(); // Add a divider between items.
+                                },
+                                itemBuilder: (BuildContext context, int index) {
+                                  QueryDocumentSnapshot document =
+                                      documents[index];
+                                  Map<String, dynamic>? data =
+                                      document.data() as Map<String, dynamic>?;
+                                  var name = data?['name'];
+                                  var address = data?['address'];
+                                  // Wrap the Container representing each fuel station with GestureDetector
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        indexx = index;
+                                        print("index$index");
+                                        OrderController().location = address;
+                                        OrderController().station = name;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: indexx == index
+                                              ? Colors.orange
+                                              : Colors.grey,
+                                          width: 2,
+                                        ),
+                                        color: Color(0xffF6F6F6),
+                                      ),
+                                      child: Card(
+                                        elevation: 2,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                        child: ListTile(
+                                          leading:
+                                              Icon(Icons.local_gas_station),
+                                          title: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  name,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          subtitle: Text(
+                                            address,
+                                            style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                          trailing: Text(
+                                            'Distance ${index + 1} km',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+
+// Existing code...
+
                       SizedBox(height: 20),
                       Text(
                         'Quantity',

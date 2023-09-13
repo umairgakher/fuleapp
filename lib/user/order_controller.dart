@@ -7,6 +7,8 @@ class OrderController {
   String? phoneno;
   String? address;
   String? carno;
+  String? station;
+  String? location;
 
   factory OrderController() {
     return _session;

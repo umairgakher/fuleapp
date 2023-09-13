@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:app/Admin/adminDashboard.dart';
+import 'package:app/Driver/drivre_dashboard.dart';
 import 'package:app/user/splashscree.dart';
 import 'package:app/user/userdashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,14 +39,21 @@ class _SplashscreenState extends State<Splashscreen> {
         Map<String, dynamic> data = docSnapshot.data();
         int? checkuser = data['checkuser'];
 
-        if (email == "admin@example.com" || checkuser == 1 || checkuser == 2) {
+        if (checkuser == 1) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => FuelAppDashboard(),
             ),
           );
-        } else {
+        } else if (checkuser == 2) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => driverDashbord(),
+            ),
+          );
+        } else if (checkuser == 0) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

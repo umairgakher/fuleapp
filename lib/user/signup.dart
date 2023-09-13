@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, sort_child_properties_last, empty_statements
 
 import 'package:app/user/signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,7 +23,15 @@ class _RegScreenState extends State<RegScreen> {
   User? user = FirebaseAuth.instance.currentUser;
 
   bool isPasswordVisible = false; // Track password visibility
-  bool isCPasswordVisible = false; // Track confirm password visibility
+  bool isCPasswordVisible = false;
+  String selectedRadioValue = 'Option 1';
+  int? driver = 0;
+
+  void handleRadioValueChange(String value) {
+    setState(() {
+      selectedRadioValue = value;
+    });
+  } // Track confirm password visibility
 
   void _createAccount() async {
     var username = usernameController.text.trim();
@@ -92,17 +100,37 @@ class _RegScreenState extends State<RegScreen> {
 
       User? user = userCredential.user;
       if (user != null) {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          "username": username,
-          "email": uemail,
-          "password": upassword,
-          "createdId": DateTime.now(),
-          "uPhone": uphone,
-          "profileImage": " ",
-          'active': 0,
-          "userId": user.uid,
-          "checkuser": 0,
-        });
+        driver == 1
+            ? await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .set({
+                "username": username,
+                "email": uemail,
+                "password": upassword,
+                "createdId": DateTime.now(),
+                "uPhone": uphone,
+                "profileImage": " ",
+                'active': 0,
+                "userId": user.uid,
+                "checkuser": 1,
+              })
+            : await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .set({
+                "username": username,
+                "email": uemail,
+                "password": upassword,
+                "createdId": DateTime.now(),
+                "uPhone": uphone,
+                "profileImage": " ",
+                'active': 0,
+                "userId": user.uid,
+                "checkuser": 0,
+                "ondelivery": 0,
+              });
+        ;
 
         Navigator.push(
           context,
@@ -282,6 +310,24 @@ class _RegScreenState extends State<RegScreen> {
             padding: const EdgeInsets.symmetric(vertical: 16),
           ),
         ),
+        Center(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Text("Sign up as a driver?"),
+            TextButton(
+              onPressed: () {
+                driver = 1;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => loginScreen()),
+                );
+              },
+              child: const Text(
+                "Sign up",
+                style: TextStyle(color: Colors.orange),
+              ),
+            ),
+          ]),
+        )
       ],
     );
   }

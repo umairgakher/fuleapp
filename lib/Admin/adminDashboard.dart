@@ -266,19 +266,6 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
               endIndent: 16,
             ),
             ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('Delete'),
-              onTap: () {
-                // Handle delete feature
-              },
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey,
-              indent: 16,
-              endIndent: 16,
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
@@ -470,6 +457,9 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
                       String formattedRequestTime =
                           formatRequestTime(request_time);
                       order = index + 1;
+                      var fuletype = data?['fuleType'] as String?;
+                      var phone = data?["phoneNo"];
+                      var carno = data?["carNo"];
 
                       return Card(
                         elevation: 2,
@@ -523,11 +513,27 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
                               ),
                             ],
                           ),
-                          trailing: Text(
-                            'Amount: $price',
-                            style: TextStyle(
-                              color: Colors.green,
-                            ),
+                          trailing: Column(
+                            children: [
+                              Text(
+                                fuletype!, // Use the null operator to handle null values
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(
+                                "Car no:$carno", // Use the null operator to handle null values
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(
+                                'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
+                                style: TextStyle(
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
