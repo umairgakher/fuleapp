@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class Feadback extends StatefulWidget {
@@ -10,6 +12,10 @@ class Feadback extends StatefulWidget {
 class _FeadbackState extends State<Feadback> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Feadback"),
+      ),
+    );
   }
 }

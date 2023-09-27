@@ -83,7 +83,7 @@ class _SplashscreenState extends State<Splashscreen> {
           height: 400,
           child: Center(
             child: Text(
-              "Fule",
+              "Fule Mate",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
             ),
           ),
