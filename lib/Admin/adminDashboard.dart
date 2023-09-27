@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_print, avoid_unnecessary_containers, unused_local_variable, use_build_context_synchronously, unnecessary_cast, unused_import, unused_element, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
+import 'package:app/Admin/feadback.dart';
 import 'package:app/rates.dart';
 import 'package:app/user/placeorder.dart';
 import 'package:app/user/signin.dart';
@@ -257,6 +258,28 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
                 );
 
                 // Handle accept feature
+              },
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
+              indent: 16,
+              endIndent: 16,
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              title: Text('Feadback'),
+              onTap: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                  Future.delayed(Duration(seconds: 2), () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => Feadback()),
+                      (route) => false,
+                    );
+                  });
+                });
+                // Handle logout feature
               },
             ),
             Divider(
