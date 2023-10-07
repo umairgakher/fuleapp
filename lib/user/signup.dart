@@ -33,7 +33,7 @@ class _RegScreenState extends State<RegScreen> {
     });
   } // Track confirm password visibility
 
-  void _createAccount() async {
+  _createAccount(int a) async {
     var username = usernameController.text.trim();
     var uemail = emailController.text.trim();
     var upassword = passwordController.text.trim();
@@ -100,7 +100,7 @@ class _RegScreenState extends State<RegScreen> {
 
       User? user = userCredential.user;
       if (user != null) {
-        driver == 1
+        a == 1
             ? await FirebaseFirestore.instance
                 .collection('users')
                 .doc(user.uid)
@@ -113,7 +113,8 @@ class _RegScreenState extends State<RegScreen> {
                 "profileImage": " ",
                 'active': 0,
                 "userId": user.uid,
-                "checkuser": 1,
+                "checkuser": 2,
+                "ondelivery": 0,
               })
             : await FirebaseFirestore.instance
                 .collection('users')
@@ -299,7 +300,7 @@ class _RegScreenState extends State<RegScreen> {
           height: 10,
         ),
         ElevatedButton(
-          onPressed: _createAccount,
+          onPressed: () => _createAccount(0),
           child: const Text(
             "Sign Up",
             style: TextStyle(fontSize: 20, color: Colors.white),
@@ -314,13 +315,7 @@ class _RegScreenState extends State<RegScreen> {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             const Text("Sign up as a driver?"),
             TextButton(
-              onPressed: () {
-                driver = 1;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => loginScreen()),
-                );
-              },
+              onPressed: () => _createAccount(1),
               child: const Text(
                 "Sign up",
                 style: TextStyle(color: Colors.orange),

@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_import, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, sized_box_for_whitespace, sort_child_properties_last, prefer_const_literals_to_create_immutables, deprecated_member_use, avoid_unnecessary_containers, avoid_print, unused_local_variable
 
+import 'package:app/Admin/feadback.dart';
 import 'package:app/profile.dart';
 import 'package:app/rates.dart';
 import 'package:app/user/googlemap.dart';
@@ -144,6 +145,19 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   context,
                   MaterialPageRoute(builder: (context) => RecentOrder()),
                 );
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: const Icon(Icons.feedback_outlined),
+              title: const Text('Feadback'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Feadback()),
+                );
+
+                // Handle accept feature
               },
             ),
             Divider(),

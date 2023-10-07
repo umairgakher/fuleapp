@@ -7,14 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class deliverOrder extends StatefulWidget {
-  const deliverOrder({Key? key}) : super(key: key);
+class allOrder extends StatefulWidget {
+  const allOrder({Key? key}) : super(key: key);
 
   @override
-  State<deliverOrder> createState() => _deliverOrderState();
+  State<allOrder> createState() => _allOrderState();
 }
 
-class _deliverOrderState extends State<deliverOrder> {
+class _allOrderState extends State<allOrder> {
   Timestamp? request_time;
   User? user = FirebaseAuth.instance.currentUser;
   int order = 0;
@@ -58,10 +58,7 @@ class _deliverOrderState extends State<deliverOrder> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('orders')
-            .where("orderDeliver", isEqualTo: userId)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('orders').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -133,7 +130,21 @@ class _deliverOrderState extends State<deliverOrder> {
                           fontStyle: FontStyle.italic,
                         ),
                       ),
-                      if (data?['orderstate'] == 0 || data?['orderstate'] == 1)
+                      if (data?['orderstate'] == 0)
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Not Accepeted",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                          ),
+                        )
+                      else if (data?['orderstate'] == 1)
                         ElevatedButton(
                           onPressed: () {},
                           child: Padding(
@@ -240,9 +251,7 @@ class _deliverOrderState extends State<deliverOrder> {
                                         'payment': payment,
                                         "gas": gas,
                                         "patrol": patrol,
-                                        "desile": desile,
-                                        "Month": currentMonthName,
-                                        "year": year,
+                                        "desile": desile
                                       },
                                     );
                                   }
@@ -252,9 +261,7 @@ class _deliverOrderState extends State<deliverOrder> {
                                     'payment': payment,
                                     "gas": gas,
                                     "patrol": patrol,
-                                    "desile": desile,
-                                    "Month": currentMonthName,
-                                    "year": year,
+                                    "desile": desile
                                   });
                                 });
 

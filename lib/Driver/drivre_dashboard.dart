@@ -32,32 +32,11 @@ class _driverDashbordState extends State<driverDashbord> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     userId = user?.uid;
-    fetchUserData();
-    // Inside initState
-    // FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(userId)
-    //     .get()
-    //     .then((snapshot) {
-    //   var data = snapshot.data();
-    //   print("Fetched data1: $data");
-    //   print("Fetched data: $data");
-    //   if (data != null) {
-    //     print("User data retrieved: $data"); // Check if data is being retrieved
-    //     setState(() {
-    //       email = data['email'];
-    //       username = data['username'];
-    //       ondelivery = data['ondelivery'] as int?;
-    //       // ignore: prefer_interpolation_to_compose_strings
-    //       print("ondelivery $ondelivery"); // Fetch ondelivery as int
-    //     });
-    //   } else {
-    //     print(
-    //         "User data not found!"); // Check if data retrieval is unsuccessful
-    //   }
-    // }).catchError((error) {
-    //   print("Error fetching user data: $error");
-    // });
+    if (userId != null) {
+      fetchUserData();
+    } else {
+      print("User not authenticated.");
+    }
   }
 
   String? date;
@@ -84,6 +63,7 @@ class _driverDashbordState extends State<driverDashbord> {
           email = data['email'];
           username = data['username'];
           ondelivery = data['ondelivery'] as int?;
+          print("ondelivery $ondelivery");
         });
       } else {
         print("User data not found!");
@@ -162,6 +142,12 @@ class _driverDashbordState extends State<driverDashbord> {
                   MaterialPageRoute(builder: (context) => deliverOrder()),
                 );
               },
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
+              indent: 16,
+              endIndent: 16,
             ),
             ListTile(
               leading: Icon(Icons.delete),

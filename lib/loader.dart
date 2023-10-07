@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, sized_box_for_whitespace
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, avoid_print, sized_box_for_whitespace
 
 import 'dart:async';
 import 'package:app/Admin/adminDashboard.dart';
@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Splashscreen extends StatefulWidget {
-  const Splashscreen({super.key});
+  const Splashscreen({Key? key}) : super(key: key);
 
   @override
   State<Splashscreen> createState() => _SplashscreenState();
@@ -23,44 +23,50 @@ class _SplashscreenState extends State<Splashscreen> {
     _checkUserAndNavigate();
   }
 
-  void _checkUserAndNavigate() async {
+  Future<void> _checkUserAndNavigate() async {
     final auth = FirebaseAuth.instance;
     final user = auth.currentUser;
-    String? email = user?.email;
 
     if (user != null) {
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection("users")
-          .where("email", isEqualTo: email)
-          .get();
+      final email = user.email;
 
-      if (querySnapshot.docs.isNotEmpty) {
-        final docSnapshot = querySnapshot.docs.first;
-        Map<String, dynamic> data = docSnapshot.data();
-        int? checkuser = data['checkuser'];
+      try {
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .where("email", isEqualTo: email)
+            .get();
 
-        if (checkuser == 1) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FuelAppDashboard(),
-            ),
-          );
-        } else if (checkuser == 2) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => driverDashbord(),
-            ),
-          );
-        } else if (checkuser == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UserDashboardScreen(),
-            ),
-          );
+        if (querySnapshot.docs.isNotEmpty) {
+          final docSnapshot = querySnapshot.docs.first;
+          final data = docSnapshot.data();
+          final checkuser = data['checkuser'];
+
+          if (checkuser == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FuelAppDashboard(),
+              ),
+            );
+          } else if (checkuser == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => driverDashbord(),
+              ),
+            );
+          } else if (checkuser == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserDashboardScreen(),
+              ),
+            );
+          }
         }
+      } catch (e) {
+        print("Error checking user data: $e");
+        // Handle the error as needed
       }
     } else {
       Timer(const Duration(seconds: 3), () {
@@ -83,7 +89,7 @@ class _SplashscreenState extends State<Splashscreen> {
           height: 400,
           child: Center(
             child: Text(
-              "Fule Mate",
+              "Fuel Mate",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
             ),
           ),
