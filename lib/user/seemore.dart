@@ -109,6 +109,9 @@ class _TrendingPumpsScreenState extends State<TrendingPumpsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           backgroundColor: Colors.orange,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

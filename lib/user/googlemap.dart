@@ -120,6 +120,9 @@ class MapSampleState extends State<MapSample> {
           'Select Location',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         backgroundColor: Colors.orange,
       ),
       body: Column(

@@ -82,6 +82,9 @@ class _RatesState extends State<Rates> {
             "Rates",
             style: TextStyle(color: Colors.white),
           ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           backgroundColor: Colors.orange,
         ),
         body: Container(

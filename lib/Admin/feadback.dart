@@ -66,6 +66,9 @@ class _FeadbackState extends State<Feadback> {
           "Feadback",
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
