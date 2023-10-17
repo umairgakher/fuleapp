@@ -216,19 +216,19 @@ class _loginScreenState extends State<loginScreen> {
                         print('checkuser: $checkuser');
 
                         if (checkuser == 1) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => FuelAppDashboard()),
                           );
                         } else if (checkuser == 2) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => driverDashbord()),
                           );
                         } else if (checkuser == 0) {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UserDashboardScreen()),
