@@ -30,15 +30,35 @@ class _CheckoutScreenState extends State<Paymet_next> {
   String? fuelType;
   int? quantity;
   int? price;
+  String? username;
 
   @override
-  @override
   void initState() {
+    super.initState();
     userId = user!.uid;
     fuelType = OrderController().fuelType;
     quantity = OrderController().quantity;
     fetchDataFromFirestore();
+
+    // Retrieve user data from Firestore and set it to `username` and `email`
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) {
+        var data = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          username = data['username'];
+        });
+      }
+    }).catchError((error) {
+      print("Error fetching user data: $error");
+    });
     super.initState();
+
+    // Fetch employee data from Firestore's "salary" collection
+    // _fetchEmployeeData();
   }
 
   Future<void> fetchDataFromFirestore() async {
@@ -245,7 +265,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
                       ? () {
                           FirebaseFirestore.instance
                               .collection('orders')
-                              .doc("$userId")
+                              .doc()
                               .set({
                             "carNo": OrderController().carno,
                             "address": OrderController().address,
@@ -257,6 +277,8 @@ class _CheckoutScreenState extends State<Paymet_next> {
                             "orderDeliver": "",
                             "Total": cast ?? 0,
                             "orderstate": 0,
+                            "name": username,
+                            "userId": userId,
                             "orderTime": DateTime.now(),
                           });
                           Navigator.push(

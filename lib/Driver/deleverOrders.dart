@@ -98,6 +98,7 @@ class _deliverOrderState extends State<deliverOrder> {
               var fuletype = data?['fuleType'] as String?;
               var phone = data?["phoneNo"];
               var carno = data?["carNo"];
+              var name = data?["name"];
 
               return Card(
                 elevation: 2,
@@ -307,27 +308,35 @@ class _deliverOrderState extends State<deliverOrder> {
                         ),
                     ],
                   ),
-                  trailing: Column(
-                    children: [
-                      Text(
-                        fuletype!, // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                  trailing: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Name: $name', // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Car no:$carno", // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                        Text(
+                          fuletype!, // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                        Text(
+                          "Car no:$carno", // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

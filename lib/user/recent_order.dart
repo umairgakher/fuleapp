@@ -58,7 +58,7 @@ class _RecentOrderState extends State<RecentOrder> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orders')
-            .where(FieldPath.documentId, isEqualTo: userId)
+            .where("userId", isEqualTo: userId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -74,21 +74,11 @@ class _RecentOrderState extends State<RecentOrder> {
           List<QueryDocumentSnapshot> documents = snapshot.data?.docs ?? [];
 
           // Filter the documents based on the document ID
-          List<QueryDocumentSnapshot> filteredDocuments =
-              documents.where((document) => document.id == userId).toList();
 
-          if (filteredDocuments.isEmpty) {
-            return Center(
-              child: Text(
-                'No fuel orders yet for this user.',
-                style: TextStyle(fontSize: 16),
-              ),
-            );
-          }
           return ListView.builder(
-            itemCount: filteredDocuments.length,
+            itemCount: documents.length,
             itemBuilder: (BuildContext context, int index) {
-              QueryDocumentSnapshot document = filteredDocuments[index];
+              QueryDocumentSnapshot document = documents[index];
               Map<String, dynamic>? data =
                   document.data() as Map<String, dynamic>?;
 
@@ -97,6 +87,7 @@ class _RecentOrderState extends State<RecentOrder> {
               request_time = data?['orderTime'] as Timestamp?;
               date = data?['date'] as String?;
               order = index + 1;
+              var name = data?["name"];
 
               return Card(
                 elevation: 2,
@@ -168,11 +159,21 @@ class _RecentOrderState extends State<RecentOrder> {
                         ),
                     ],
                   ),
-                  trailing: Text(
-                    'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
-                    style: TextStyle(
-                      color: Colors.green,
-                    ),
+                  trailing: Column(
+                    children: [
+                      Text(
+                        'Name: $name', // Use the null operator to handle null values
+                        style: TextStyle(
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(
+                        'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
+                        style: TextStyle(
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

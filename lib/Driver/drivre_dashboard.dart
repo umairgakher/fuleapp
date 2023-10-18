@@ -218,6 +218,7 @@ class _driverDashbordState extends State<driverDashbord> {
               var price = data?['Total'];
               var address = data?['address'];
               var orderstate = data?["orderstate"];
+              var name = data?["name"];
 
               request_time = data?['orderTime'] as Timestamp?;
               String formattedRequestTime = formatRequestTime(request_time);
@@ -288,27 +289,35 @@ class _driverDashbordState extends State<driverDashbord> {
                       ),
                     ],
                   ),
-                  trailing: Column(
-                    children: [
-                      Text(
-                        fuletype!, // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                  trailing: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Name: $name', // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Car no:$carno", // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                        Text(
+                          fuletype!, // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
-                        style: TextStyle(
-                          color: Colors.green,
+                        Text(
+                          "Car no:$carno", // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
