@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:app/Admin/adminDashboard.dart';
 import 'package:app/Driver/drivre_dashboard.dart';
+import 'package:app/petrolManager/petrol_manager.dart';
 import 'package:app/user/splashscree.dart';
 import 'package:app/user/userdashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,6 +55,11 @@ class _SplashscreenState extends State<Splashscreen> {
               MaterialPageRoute(
                 builder: (context) => driverDashbord(),
               ),
+            );
+          } else if (checkuser == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => PetrolManger()),
             );
           } else if (checkuser == 0) {
             Navigator.pushReplacement(

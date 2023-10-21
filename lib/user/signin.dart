@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, avoid_print, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, camel_case_types, unused_element, unused_local_variable, unused_field
 
 import 'package:app/Admin/adminDashboard.dart';
+import 'package:app/petrolManager/petrol_manager.dart';
 import 'package:app/user/signup.dart';
 import 'package:app/user/userdashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -226,6 +227,12 @@ class _loginScreenState extends State<loginScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => driverDashbord()),
+                          );
+                        } else if (checkuser == 3) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PetrolManger()),
                           );
                         } else if (checkuser == 0) {
                           Navigator.pushReplacement(

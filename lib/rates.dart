@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, unused_local_variable, unused_element, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, unused_local_variable, unused_element, use_build_context_synchronously, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,19 +12,42 @@ class Rates extends StatefulWidget {
 }
 
 class _RatesState extends State<Rates> {
-  User? user = FirebaseAuth.instance.currentUser;
-  String? email;
+  User user = FirebaseAuth.instance.currentUser!;
+  String? userId;
+  String username = '';
+  String userComment = '';
+  String userName = '';
+  String email = '';
+
+  int? checkuser;
+
   @override
   void initState() {
     super.initState();
-    email = user?.email;
+    email = user.email!;
+    fetchCheckUser();
+  }
+
+  Future<void> fetchCheckUser() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      final docSnapshot = querySnapshot.docs.first;
+      Map<String, dynamic> data = docSnapshot.data();
+      setState(() {
+        checkuser = data['checkuser'];
+        print('checkuser: $checkuser');
+      });
+    }
   }
 
   void _editFuelStation(String index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String? newName;
+        int? newName;
         String? newAddress;
 
         return AlertDialog(
@@ -35,7 +58,10 @@ class _RatesState extends State<Rates> {
               TextField(
                 decoration: InputDecoration(labelText: 'price'),
                 onChanged: (value) {
-                  newName = value;
+                  int? parsedValue = int.tryParse(value);
+                  if (parsedValue != null) {
+                    newName = parsedValue;
+                  }
                 },
               ),
             ],
@@ -135,7 +161,9 @@ class _RatesState extends State<Rates> {
                               ),
                             ),
                           ),
-                          email == "admin@example.com"
+                          email == "admin@example.com" ||
+                                  checkuser == 3 ||
+                                  checkuser == 1
                               ? IconButton(
                                   icon: Icon(Icons.edit),
                                   onPressed: () {

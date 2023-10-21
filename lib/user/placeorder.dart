@@ -20,7 +20,7 @@ class _OrderScreenState extends State<order> {
   final TextEditingController addressController =
       TextEditingController(text: LocationController().currentLocation);
   final TextEditingController fuleQuintityController = TextEditingController();
-  String? fuelType = "Petrol";
+  String? fuelType = "";
   bool isOrderForYourselfActive = true;
   int selectedFuelType = 0;
   int? indexx;
@@ -298,7 +298,7 @@ class _OrderScreenState extends State<order> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                fuelType = "Gasoline";
+                                fuelType = "High octane";
                                 print("fuelType$fuelType");
                                 selectedFuelType = 1;
                               });
@@ -320,7 +320,7 @@ class _OrderScreenState extends State<order> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.ev_station,
+                                    Icons.local_gas_station,
                                     size: 30,
                                     color: selectedFuelType == 1
                                         ? Colors.orange
@@ -328,7 +328,7 @@ class _OrderScreenState extends State<order> {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    'Gasoline',
+                                    'High octane',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
