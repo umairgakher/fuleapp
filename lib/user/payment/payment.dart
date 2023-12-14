@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, prefer_const_constructors, camel_case_types, library_private_types_in_public_api, sized_box_for_whitespace, use_key_in_widget_constructors, avoid_unnecessary_containers, sort_child_properties_last, unused_field
+// ignore_for_file: prefer_final_fields, avoid_print, prefer_const_constructors, camel_case_types, library_private_types_in_public_api, sized_box_for_whitespace, use_key_in_widget_constructors, avoid_unnecessary_containers, sort_child_properties_last, unused_field, no_leading_underscores_for_local_identifiers
 
 import 'dart:async';
 import 'dart:io';
@@ -204,8 +204,9 @@ class _PaymentMethodScreenState extends State<payment_method> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final ImagePicker _picker = ImagePicker();
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
