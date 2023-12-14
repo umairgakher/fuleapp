@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'payment/payment.dart';
+
 class Paymet_next extends StatefulWidget {
   final String fuelType;
   final double fuelAmount;
@@ -76,6 +78,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
           print("$price price");
           setState(() {
             cast = ((quantity ?? 0) * (price ?? 0));
+            cast = (cast! + 150);
           });
         }
       } else {
@@ -175,10 +178,16 @@ class _CheckoutScreenState extends State<Paymet_next> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      '${cast?.toStringAsFixed(2)}',
+                      '${cast!.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '150 delivery charges',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                   ],
@@ -262,31 +271,43 @@ class _CheckoutScreenState extends State<Paymet_next> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: (cast ?? 0) > 0
-                      ? () {
-                          FirebaseFirestore.instance
-                              .collection('orders')
-                              .doc()
-                              .set({
-                            "carNo": OrderController().carno,
-                            "address": OrderController().address,
-                            "quantity": OrderController().quantity ?? 0,
-                            "phoneNo": OrderController().phoneno,
-                            "fuleType": OrderController().fuelType,
-                            "station": OrderController().station,
-                            "stationAddress": OrderController().address,
-                            "orderDeliver": "",
-                            "Total": cast ?? 0,
-                            "orderstate": 0,
-                            "name": username,
-                            "userId": userId,
-                            "orderTime": DateTime.now(),
-                          });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Sucess()),
-                          );
-                          // Proceed button functionality
-                        }
+                      ? !isEasypaisaSelected
+                          ? () {
+                              FirebaseFirestore.instance
+                                  .collection('orders')
+                                  .doc()
+                                  .set({
+                                "carNo": OrderController().carno,
+                                "address": OrderController().address,
+                                "quantity": OrderController().quantity ?? 0,
+                                "phoneNo": OrderController().phoneno,
+                                "fuleType": OrderController().fuelType,
+                                "station": OrderController().station,
+                                "stationAddress": OrderController().address,
+                                "orderDeliver": "",
+                                "Total": cast ?? 0,
+                                "orderstate": 0,
+                                "name": username,
+                                "userId": userId,
+                                "orderTime": DateTime.now(),
+                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Sucess()),
+                              );
+                              // Proceed button functionality
+                            }
+                          : () => {
+                                OrderController().cast = cast ?? 0,
+                                OrderController().username = username,
+                                OrderController().userId = userId,
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => payment_method()),
+                                )
+                              }
                       : null,
                   style: ElevatedButton.styleFrom(
                     primary: (cast ?? 0) > 0 ? Colors.orange : Colors.grey,

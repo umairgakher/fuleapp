@@ -9,6 +9,9 @@ class OrderController {
   String? carno;
   String? station;
   String? location;
+  int? cast;
+  String? userId;
+  String? username;
 
   factory OrderController() {
     return _session;

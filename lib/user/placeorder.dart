@@ -20,7 +20,7 @@ class _OrderScreenState extends State<order> {
   final TextEditingController addressController =
       TextEditingController(text: LocationController().currentLocation);
   final TextEditingController fuleQuintityController = TextEditingController();
-  String? fuelType = "";
+  String? fuelType = "Petrol";
   bool isOrderForYourselfActive = true;
   int selectedFuelType = 0;
   int? indexx;
