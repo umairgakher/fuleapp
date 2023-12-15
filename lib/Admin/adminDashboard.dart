@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'transaction/transactions.dart';
+
 class FuelAppDashboard extends StatefulWidget {
   @override
   _FuelAppDashboardState createState() => _FuelAppDashboardState();
@@ -272,6 +274,22 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
               endIndent: 16,
             ),
             ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text('Payment Secreenshort'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TransactionsScreen()),
+                );
+              },
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
+              indent: 16,
+              endIndent: 16,
+            ),
+            ListTile(
               leading: const Icon(Icons.av_timer_sharp),
               title: const Text('Recent Orders'),
               onTap: () {
@@ -405,12 +423,19 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('stations')
-                    .where('name',
-                        isEqualTo: searchInput.isNotEmpty ? searchInput : null)
-                    // .where('searchableNames', arrayContains: searchInput)
-                    .snapshots(),
+                stream: searchInput.isNotEmpty
+                    ? FirebaseFirestore.instance
+                        .collection('stations')
+                        .where('name',
+                            isEqualTo:
+                                searchInput.isNotEmpty ? searchInput : null)
+                        // .where('searchableNames', arrayContains: searchInput)
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('stations')
+
+                        // .where('searchableNames', arrayContains: searchInput)
+                        .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {

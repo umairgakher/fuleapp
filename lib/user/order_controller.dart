@@ -12,6 +12,7 @@ class OrderController {
   int? cast;
   String? userId;
   String? username;
+  String? email;
 
   factory OrderController() {
     return _session;

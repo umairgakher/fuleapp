@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_final_fields, avoid_print, prefer_const_constructors, camel_case_types, library_private_types_in_public_api, sized_box_for_whitespace, use_key_in_widget_constructors, avoid_unnecessary_containers, sort_child_properties_last, unused_field, no_leading_underscores_for_local_identifiers
+// ignore_for_file: prefer_final_fields, avoid_print, prefer_const_constructors, camel_case_types, library_private_types_in_public_api, sized_box_for_whitespace, use_key_in_widget_constructors, avoid_unnecessary_containers, sort_child_properties_last, unused_field
 
 import 'dart:async';
 import 'dart:io';
+import 'package:app/user/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../order_controller.dart';
+import '../success.dart';
 
 class payment_method extends StatefulWidget {
   const payment_method({Key? key}) : super(key: key);
@@ -55,14 +57,20 @@ class _PaymentMethodScreenState extends State<payment_method> {
               ),
             ),
             SizedBox(height: 16),
+            BankAccountDisplay(),
             _selectedImage != null
-                ? Image.file(
-                    _selectedImage!,
-                    height: 100,
-                    width: 100,
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: double.infinity,
+                      child: Image.file(
+                        _selectedImage!,
+                        height: 300,
+                        width: double.infinity,
+                      ),
+                    ),
                   )
                 : SizedBox.shrink(),
-            BankAccountDisplay(),
             SizedBox(height: 16),
             Center(
               child: Container(
@@ -95,7 +103,7 @@ class _PaymentMethodScreenState extends State<payment_method> {
                         int.tryParse(inputText); // Try to parse it to an int
 
                     if (input != null) {
-                      if (OrderController().quantity! + 150 == input) {
+                      if (OrderController().cast == input) {
                         if (!_isLoading) {
                           // _sendPayment(OrderController().uid);
                           if (_selectedImage != null) {
@@ -118,6 +126,22 @@ class _PaymentMethodScreenState extends State<payment_method> {
                               "userId": OrderController().userId,
                               "orderTime": DateTime.now(),
                             });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Sucess()),
+                            );
+                            //
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Select an image first",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.orange,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            return;
                           }
                         }
                       } else {
@@ -190,6 +214,7 @@ class _PaymentMethodScreenState extends State<payment_method> {
       'doc': {
         'month': currentMonth,
         'username': OrderController().username,
+        "email": LocationController().email,
       },
     }, SetOptions(merge: true));
 
@@ -204,9 +229,8 @@ class _PaymentMethodScreenState extends State<payment_method> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {

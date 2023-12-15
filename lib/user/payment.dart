@@ -33,6 +33,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
   int? quantity;
   int? price;
   String? username;
+  String? email;
 
   @override
   void initState() {
@@ -52,6 +53,8 @@ class _CheckoutScreenState extends State<Paymet_next> {
         var data = snapshot.data() as Map<String, dynamic>;
         setState(() {
           username = data['username'];
+          email = data["email"];
+          print("ema" + email!);
         });
       }
     }).catchError((error) {
@@ -302,6 +305,8 @@ class _CheckoutScreenState extends State<Paymet_next> {
                                 OrderController().cast = cast ?? 0,
                                 OrderController().username = username,
                                 OrderController().userId = userId,
+                                OrderController().userId = email,
+                                print((OrderController().cast)),
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

@@ -14,6 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../Admin/transaction/transactions.dart';
+
 class PetrolManger extends StatefulWidget {
   @override
   _PetrolMangerState createState() => _PetrolMangerState();
@@ -291,6 +293,22 @@ class _PetrolMangerState extends State<PetrolManger> {
               endIndent: 16,
             ),
             ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text('Payment Secreenshort'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TransactionsScreen()),
+                );
+              },
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey,
+              indent: 16,
+              endIndent: 16,
+            ),
+            ListTile(
               leading: const Icon(Icons.drive_eta),
               title: const Text('Drivers'),
               onTap: () {
@@ -392,12 +410,19 @@ class _PetrolMangerState extends State<PetrolManger> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('stations')
-                    .where('name',
-                        isEqualTo: searchInput.isNotEmpty ? searchInput : null)
-                    // .where('searchableNames', arrayContains: searchInput)
-                    .snapshots(),
+                stream: searchInput.isNotEmpty
+                    ? FirebaseFirestore.instance
+                        .collection('stations')
+                        .where('name',
+                            isEqualTo:
+                                searchInput.isNotEmpty ? searchInput : null)
+                        // .where('searchableNames', arrayContains: searchInput)
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('stations')
+
+                        // .where('searchableNames', arrayContains: searchInput)
+                        .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {

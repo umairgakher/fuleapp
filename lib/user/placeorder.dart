@@ -73,9 +73,6 @@ class _OrderScreenState extends State<order> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text('Order Fuel'),
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),

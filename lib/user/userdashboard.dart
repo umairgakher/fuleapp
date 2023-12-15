@@ -52,6 +52,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         setState(() {
           email = data['email'];
           username = data['username'];
+          LocationController().email = data['email'];
         });
       } else {
         print(

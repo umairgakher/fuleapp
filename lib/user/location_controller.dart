@@ -4,6 +4,7 @@ class LocationController {
   static final LocationController _session = LocationController._internal();
   String? currentLocation;
   String? selectedLocationAddress;
+  String? email;
   factory LocationController() {
     return _session;
   }
