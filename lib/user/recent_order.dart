@@ -167,6 +167,20 @@ class _RecentOrderState extends State<RecentOrder> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange,
                           ),
+                        )
+                      else if (data?['orderstate'] == 3)
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Rejected",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                          ),
                         ),
                     ],
                   ),
