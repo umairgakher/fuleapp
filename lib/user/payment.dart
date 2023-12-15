@@ -305,7 +305,7 @@ class _CheckoutScreenState extends State<Paymet_next> {
                                 OrderController().cast = cast ?? 0,
                                 OrderController().username = username,
                                 OrderController().userId = userId,
-                                OrderController().userId = email,
+                                OrderController().email = email,
                                 print((OrderController().cast)),
                                 Navigator.push(
                                   context,

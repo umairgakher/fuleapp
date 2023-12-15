@@ -315,22 +315,22 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
                 );
               },
             ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey,
-              indent: 16,
-              endIndent: 16,
-            ),
-            ListTile(
-              leading: const Icon(Icons.drive_eta),
-              title: const Text('Drivers'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Driver()),
-                );
-              },
-            ),
+            // Divider(
+            //   thickness: 1,
+            //   color: Colors.grey,
+            //   indent: 16,
+            //   endIndent: 16,
+            // ),
+            // ListTile(
+            //   leading: const Icon(Icons.drive_eta),
+            //   title: const Text('Drivers'),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => Driver()),
+            //     );
+            //   },
+            // ),
             Divider(
               thickness: 1,
               color: Colors.grey,
@@ -518,151 +518,151 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
                 }),
           ),
           SizedBox(height: 16),
-          Text(
-            'Recent Fuel Orders',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          Divider(
-            thickness: 2,
-            indent: 16,
-            endIndent: 16,
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('orders')
-                    .where('orderstate', isEqualTo: 0)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
+          // Text(
+          //   'Recent Fuel Orders',
+          //   style: TextStyle(
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 20,
+          //   ),
+          // ),
+          // Divider(
+          //   thickness: 2,
+          //   indent: 16,
+          //   endIndent: 16,
+          // ),
+          // Expanded(
+          //   child: StreamBuilder<QuerySnapshot>(
+          //       stream: FirebaseFirestore.instance
+          //           .collection('orders')
+          //           .where('orderstate', isEqualTo: 0)
+          //           .snapshots(),
+          //       builder: (BuildContext context,
+          //           AsyncSnapshot<QuerySnapshot> snapshot) {
+          //         if (snapshot.hasError) {
+          //           return Text('Error: ${snapshot.error}');
+          //         }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
+          //         if (snapshot.connectionState == ConnectionState.waiting) {
+          //           return const CircularProgressIndicator();
+          //         }
 
-                  List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+          //         List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
 
-                  if (documents.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No fule order yet.',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: documents.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      QueryDocumentSnapshot document = documents[index];
-                      Map<String, dynamic>? data =
-                          documents[index].data() as Map<String, dynamic>?;
-                      var price = data?['Total'];
-                      var address = data?['address'];
-                      var name = data?["name"];
+          //         if (documents.isEmpty) {
+          //           return Center(
+          //             child: Text(
+          //               'No fule order yet.',
+          //               style: TextStyle(fontSize: 16),
+          //             ),
+          //           );
+          //         }
+          //         return ListView.builder(
+          //           shrinkWrap: true,
+          //           itemCount: documents.length,
+          //           itemBuilder: (BuildContext context, int index) {
+          //             QueryDocumentSnapshot document = documents[index];
+          //             Map<String, dynamic>? data =
+          //                 documents[index].data() as Map<String, dynamic>?;
+          //             var price = data?['Total'];
+          //             var address = data?['address'];
+          //             var name = data?["name"];
 
-                      request_time = data?['orderTime'] as Timestamp?;
-                      String formattedRequestTime =
-                          formatRequestTime(request_time);
-                      order = index + 1;
-                      var fuletype = data?['fuleType'] as String?;
-                      var phone = data?["phoneNo"];
-                      var carno = data?["carNo"];
+          //             request_time = data?['orderTime'] as Timestamp?;
+          //             String formattedRequestTime =
+          //                 formatRequestTime(request_time);
+          //             order = index + 1;
+          //             var fuletype = data?['fuleType'] as String?;
+          //             var phone = data?["phoneNo"];
+          //             var carno = data?["carNo"];
 
-                      return Card(
-                        elevation: 2,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: ListTile(
-                          leading: Icon(Icons.shopping_cart),
-                          title: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Order$order",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.done),
-                                onPressed: () {
-                                  _editRecentFuelOrder(
-                                      documents[index].id as String);
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  _deleteRecentFuelOrder(
-                                      documents[index].id as String);
-                                  (index);
-                                },
-                              ),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                formatRequestTime(request_time),
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                              Text(
-                                date!,
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Name: $name', // Use the null operator to handle null values
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  fuletype!, // Use the null operator to handle null values
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  "Car no:$carno", // Use the null operator to handle null values
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                Text(
-                                  'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }),
-          ),
+          //             return Card(
+          //               elevation: 2,
+          //               margin:
+          //                   EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          //               child: ListTile(
+          //                 leading: Icon(Icons.shopping_cart),
+          //                 title: Row(
+          //                   children: [
+          //                     Expanded(
+          //                       child: Text(
+          //                         "Order$order",
+          //                         style: TextStyle(
+          //                           fontWeight: FontWeight.bold,
+          //                           fontSize: 16,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     IconButton(
+          //                       icon: Icon(Icons.done),
+          //                       onPressed: () {
+          //                         _editRecentFuelOrder(
+          //                             documents[index].id as String);
+          //                       },
+          //                     ),
+          //                     IconButton(
+          //                       icon: Icon(Icons.delete),
+          //                       onPressed: () {
+          //                         _deleteRecentFuelOrder(
+          //                             documents[index].id as String);
+          //                         (index);
+          //                       },
+          //                     ),
+          //                   ],
+          //                 ),
+          //                 subtitle: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       formatRequestTime(request_time),
+          //                       style: TextStyle(
+          //                         color: Colors.black,
+          //                         fontStyle: FontStyle.italic,
+          //                       ),
+          //                     ),
+          //                     Text(
+          //                       date!,
+          //                       style: TextStyle(
+          //                         fontStyle: FontStyle.italic,
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 ),
+          //                 trailing: SingleChildScrollView(
+          //                   child: Column(
+          //                     children: [
+          //                       Text(
+          //                         'Name: $name', // Use the null operator to handle null values
+          //                         style: TextStyle(
+          //                           color: Colors.green,
+          //                         ),
+          //                       ),
+          //                       Text(
+          //                         fuletype!, // Use the null operator to handle null values
+          //                         style: TextStyle(
+          //                           color: Colors.green,
+          //                         ),
+          //                       ),
+          //                       Text(
+          //                         "Car no:$carno", // Use the null operator to handle null values
+          //                         style: TextStyle(
+          //                           color: Colors.green,
+          //                         ),
+          //                       ),
+          //                       Text(
+          //                         'Amount: ${price?.toStringAsFixed(2) ?? ''}', // Use the null operator to handle null values
+          //                         style: TextStyle(
+          //                           color: Colors.green,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             );
+          //           },
+          //         );
+          //       }),
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

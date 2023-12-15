@@ -32,7 +32,9 @@ class _DriverState extends State<Driver> {
     await fetchUserCheckuser(user.uid);
     final querySnapshot = await FirebaseFirestore.instance
         .collection("users")
-        .orderBy("username")
+        .where("checkuser",
+            isEqualTo: 2) // Fetch only users with checkuser equal to 2
+        // .orderBy("username")
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -75,18 +77,14 @@ class _DriverState extends State<Driver> {
       final int? currentUserCheckuser = checkuser;
 
       // Customize these conditions to filter based on your needs
-      if (currentUserCheckuser == 0) {
-        // Display users with checkuser value 0
-        filteredUsers =
-            filteredUsers.where((user) => user['checkuser'] == 0).toList();
-      } else if (currentUserCheckuser == 2) {
+      if (currentUserCheckuser == 2) {
         // Display users with checkuser value 2
         filteredUsers =
             filteredUsers.where((user) => user['checkuser'] == 2).toList();
       } else if (currentUserCheckuser == 1) {
         // Display users with checkuser value 1
         filteredUsers =
-            filteredUsers.where((user) => user['checkuser'] == 2).toList();
+            filteredUsers.where((user) => user['checkuser'] == 1).toList();
       }
       // Add more conditions as needed.
     });
@@ -97,7 +95,7 @@ class _DriverState extends State<Driver> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "All Users",
+          "All Drivers",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(

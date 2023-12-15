@@ -22,6 +22,7 @@ class _RecentOrderState extends State<RecentOrder> {
   @override
   void initState() {
     userId = user?.uid;
+    print("useid$userId");
     super.initState();
   }
 
@@ -61,6 +62,12 @@ class _RecentOrderState extends State<RecentOrder> {
             .where("userId", isEqualTo: userId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print('StreamBuilder triggered');
+          if (!snapshot.hasData || snapshot.data?.docs == null) {
+            print('No data available');
+            return Text('No data available');
+          }
+
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
@@ -88,6 +95,10 @@ class _RecentOrderState extends State<RecentOrder> {
               date = data?['date'] as String?;
               order = index + 1;
               var name = data?["name"];
+              print('Order: $order');
+              print('Request Time: ${formatRequestTime(request_time)}');
+              print('Date: $date');
+              print('Name: $name');
 
               return Card(
                 elevation: 2,

@@ -161,7 +161,9 @@ class _RatesState extends State<Rates> {
                               ),
                             ),
                           ),
-                          checkuser == 3
+                          email == "admin@example.com" ||
+                                  checkuser == 3 ||
+                                  checkuser == 1
                               ? IconButton(
                                   icon: Icon(Icons.edit),
                                   onPressed: () {
