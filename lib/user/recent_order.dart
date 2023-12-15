@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, sort_child_properties_last, unused_element
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, sort_child_properties_last, unused_element, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
