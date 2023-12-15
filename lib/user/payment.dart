@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, prefer_const_constructors, unused_local_variable, camel_case_types, use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, unnecessary_string_interpolations, prefer_const_constructors_in_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_cast
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, unused_local_variable, camel_case_types, use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, unnecessary_string_interpolations, prefer_const_constructors_in_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_cast, prefer_interpolation_to_compose_strings
 
 import 'package:app/user/location_controller.dart';
 import 'package:app/user/order_controller.dart';
