@@ -358,7 +358,7 @@ class _PetrolMangerState extends State<PetrolManger> {
             ),
             ListTile(
               leading: const Icon(Icons.feedback_outlined),
-              title: const Text('Feadback'),
+              title: const Text('Feedback'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -668,13 +668,13 @@ class _PetrolMangerState extends State<PetrolManger> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          _addFuelStation();
-        },
-        backgroundColor: Colors.orange,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
+      //     _addFuelStation();
+      //   },
+      //   backgroundColor: Colors.orange,
+      // ),
     );
   }
 }

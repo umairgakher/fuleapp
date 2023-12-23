@@ -140,7 +140,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
             Divider(),
             ListTile(
               leading: const Icon(Icons.av_timer_sharp),
-              title: const Text('Recent Orders'),
+              title: const Text('Veiw order details'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -151,7 +151,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
             Divider(),
             ListTile(
               leading: const Icon(Icons.feedback_outlined),
-              title: const Text('Feadback'),
+              title: const Text('feedback'),
               onTap: () {
                 Navigator.push(
                   context,

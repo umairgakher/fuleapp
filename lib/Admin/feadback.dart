@@ -63,7 +63,7 @@ class _FeadbackState extends State<Feadback> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Feadback",
+          "Feedback",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(
@@ -96,7 +96,7 @@ class _FeadbackState extends State<Feadback> {
                   if (documents.isEmpty) {
                     return Center(
                       child: Text(
-                        'No Feadback yet.',
+                        'No feedback yet.',
                         style: TextStyle(fontSize: 16),
                       ),
                     );
@@ -189,7 +189,7 @@ class _FeadbackState extends State<Feadback> {
                     child: TextField(
                       controller: Feadback,
                       decoration: InputDecoration(
-                        hintText: "Feadback",
+                        hintText: "feedback",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,

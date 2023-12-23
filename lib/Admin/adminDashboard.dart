@@ -355,7 +355,7 @@ class _FuelAppDashboardState extends State<FuelAppDashboard> {
             ),
             ListTile(
               leading: const Icon(Icons.feedback_outlined),
-              title: const Text('Feadback'),
+              title: const Text('Feedback'),
               onTap: () {
                 Navigator.push(
                   context,
